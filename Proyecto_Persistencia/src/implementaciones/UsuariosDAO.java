@@ -11,6 +11,10 @@ import interfaces.IUsuariosDAO;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  *
@@ -83,9 +87,18 @@ public class UsuariosDAO implements IUsuariosDAO {
     @Override
     public Usuario consultarUsuarioPorId(Long id) throws PersistenciaException {
         try {
-            EntityManager entityManager = this.conexionBD.crearConexion();
-            Usuario usuario = entityManager.find(Usuario.class, id);
-            return usuario;
+            EntityManager em = this.conexionBD.crearConexion();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Usuario> criteria = builder.createQuery(Usuario.class);
+            
+            
+            //INICIO CONFIGURACIONES DE CONSULTA
+            Root<Usuario> entidad = criteria.from(Usuario.class);
+            criteria.where(builder.equal(entidad.get("id"), id));
+            //FIN CONFIGURACIONES DE CONSULTA
+            
+            TypedQuery<Usuario> query = em.createQuery(criteria);
+            return query.getSingleResult();
         } catch (Exception ex) {
             Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No se pudo consultar el usuario ");

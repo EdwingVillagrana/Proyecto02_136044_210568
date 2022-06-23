@@ -49,12 +49,11 @@ public class Pruebas {
 //            System.out.println(e.getMessage());
 //        }
         //CONSULTAR-CORRECTO
-//        try {
-//            System.out.println(usuariosDAO.consultarUsuarioPorId(5L));
-//            System.out.println(usuariosDAO.consultarUsuarioPorId(1L));
-//        } catch (PersistenciaException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            System.out.println(usuariosDAO.consultarUsuarioPorId(2L));
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
         //ELIMINAR-CORRECTO
 //        try {
 //            usuariosDAO.eliminar(new Usuario(10L));

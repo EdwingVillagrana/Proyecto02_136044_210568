@@ -5,7 +5,10 @@
 package interfaces;
 
 import entidades.Compra;
+import entidades.Usuario;
 import excepciones.PersistenciaException;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  *
@@ -13,7 +16,7 @@ import excepciones.PersistenciaException;
  */
 public interface IComprasDAO {
     public void agregar (Compra compra) throws PersistenciaException;
-    public void actualizar(Compra compra) throws PersistenciaException;
-    public Compra consultarUsuarioPorId(Long id)throws PersistenciaException;
-    public void eliminar(Compra compra) throws PersistenciaException;
+    public List<Compra> consultarTodos()throws PersistenciaException;
+    public List<Compra> consultarPorUsuario(Usuario usuario) throws PersistenciaException;
+    public List<Compra> consultarPorPeriodo(Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException;
 }
