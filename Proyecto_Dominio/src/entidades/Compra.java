@@ -7,11 +7,14 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,6 +38,10 @@ public class Compra implements Serializable {
     
     @Column(name = "total", nullable = false)
     private Double total;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
 
     public Compra() {
     }
@@ -44,10 +51,17 @@ public class Compra implements Serializable {
         this.total = total;
     }
 
-    public Compra(Long id, Calendar fechaCompra, Double total) {
+    public Compra(Calendar fechaCompra, Double total, Usuario usuario) {
+        this.fechaCompra = fechaCompra;
+        this.total = total;
+        this.usuario = usuario;
+    }
+
+    public Compra(Long id, Calendar fechaCompra, Double total, Usuario usuario) {
         this.id = id;
         this.fechaCompra = fechaCompra;
         this.total = total;
+        this.usuario = usuario;
     }
     
     public Long getId() {
@@ -72,6 +86,14 @@ public class Compra implements Serializable {
 
     public void setFechaCompra(Calendar fechaCompra) {
         this.fechaCompra = fechaCompra;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override

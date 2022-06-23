@@ -6,11 +6,15 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -32,6 +36,9 @@ public class Usuario implements Serializable {
     @Column(name = "telefono", nullable = false, length = 12)
     private String telefono;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
+    private List<Compra> listaCompras;
+    
     public Usuario() {
     }
 
@@ -44,10 +51,17 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
-    public Usuario(Long id, String nombre, String telefono) {
+    public Usuario(String nombre, String telefono, List<Compra> compras) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.listaCompras = compras;
+    }
+
+    public Usuario(Long id, String nombre, String telefono, List<Compra> compras) {
         this.id = id;
         this.nombre = nombre;
         this.telefono = telefono;
+        this.listaCompras = compras;
     }
     
     public Long getId() {
@@ -72,6 +86,25 @@ public class Usuario implements Serializable {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public List<Compra> getCompras() {
+        return listaCompras;
+    }
+
+    public void setCompras(List<Compra> compras) {
+        this.listaCompras = compras;
+    }
+    
+    public void addCompra(Compra compra){
+        if(compra == null){
+            throw new IllegalArgumentException("La compra no puede estar vacía");
+        }
+        compra.setUsuario(this);
+        if(this.listaCompras == null){ 
+            this.listaCompras = new LinkedList<>();
+        }
+        this.listaCompras.add(compra);
     }
 
     @Override
