@@ -33,7 +33,16 @@ public class ComprasDAO implements IComprasDAO {
 
     @Override
     public void agregar(Compra compra) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            em.getTransaction().begin();
+            em.persist(compra);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            Logger.getLogger(ComprasDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No fue posible agregar la compra");
+        }
     }
 
     @Override
@@ -57,12 +66,12 @@ public class ComprasDAO implements IComprasDAO {
             EntityManager em = this.conexionBD.crearConexion();
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<Compra> criteria = builder.createQuery(Compra.class);
-            
+
             //INICIO CONFIGURACIONES DE CONSULTA
             Root<Compra> entidad = criteria.from(Compra.class);
-            criteria.where(builder.equal(entidad.get("id_usuario"), usuario.getId()));
+            criteria.where(builder.equal(entidad.get("id"), usuario.getId()));
             //FIN CONFIGURACIONES DE CONSULTA
-            
+
             TypedQuery<Compra> query = em.createQuery(criteria);
             return query.getResultList();
         } catch (Exception e) {
@@ -73,7 +82,22 @@ public class ComprasDAO implements IComprasDAO {
 
     @Override
     public List<Compra> consultarPorPeriodo(Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Compra> criteria = builder.createQuery(Compra.class);
+
+            //INICIO CONFIGURACIONES DE CONSULTA
+            Root<Compra> entidad = criteria.from(Compra.class);
+            criteria.where(builder.between(entidad.get("fechaCompra"), fechaInicio, fechaFin));
+            //FIN CONFIGURACIONES DE CONSULTA
+
+            TypedQuery<Compra> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception e) {
+            Logger.getLogger(ComprasDAO.class.getName()).log(Level.SEVERE, null, e);
+            throw new PersistenciaException("No se pudo consultar la lista de compras de este periodo");
+        }
+    }
 }

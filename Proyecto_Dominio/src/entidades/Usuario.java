@@ -51,6 +51,12 @@ public class Usuario implements Serializable {
         this.telefono = telefono;
     }
 
+    public Usuario(Long id, String nombre, String telefono) {
+        this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+    }
+
     public Usuario(String nombre, String telefono, List<Compra> compras) {
         this.nombre = nombre;
         this.telefono = telefono;
