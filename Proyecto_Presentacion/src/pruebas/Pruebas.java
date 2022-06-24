@@ -51,16 +51,25 @@ public class Pruebas {
 //            System.out.println(e.getMessage());
 //        }
 
+//        try {
+//            Usuario usuario = usuariosDAO.consultarUsuarioPorId(1L);
+//            if(usuario != null){
+//                System.out.println(usuario);
+//            }else{
+//                System.out.println("No se encontró al usuario");
+//            }
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
+
         try {
-            Usuario usuario = usuariosDAO.consultarUsuarioPorId(1L);
-            if(usuario != null){
-                System.out.println(usuario);
-            }else{
-                System.out.println("No se encontró al usuario");
-            }
+            System.out.println(usuariosDAO.consultarUsuarioPorId(10L));
+            System.out.println(usuariosDAO.consultarUsuarioPorId(1L));
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
+        
+        
     }
 
 }
