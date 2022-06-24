@@ -26,3 +26,6 @@ hs_err_pid*
 /Proyecto_Dominio/build/
 /Proyecto_Persistencia/build/
 /Proyecto_Presentacion/build/
+/Proyecto_Dominio/dist/
+/Proyecto_Persistencia/dist/
+/Proyecto_Presentacion/dist/

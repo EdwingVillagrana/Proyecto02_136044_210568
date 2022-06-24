@@ -8,6 +8,7 @@ import entidades.Usuario;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
 import interfaces.IUsuariosDAO;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
@@ -101,7 +102,27 @@ public class UsuariosDAO implements IUsuariosDAO {
             return query.getSingleResult();
         } catch (Exception ex) {
             Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("No se pudo consultar el usuario ");
+            throw new PersistenciaException("No se pudo consultar el usuario");
+        }
+    }
+    
+    public List<Usuario> consultarUsuarioPorNombre(String nombre) throws PersistenciaException {
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Usuario> criteria = builder.createQuery(Usuario.class);
+            
+            
+            //INICIO CONFIGURACIONES DE CONSULTA
+            Root<Usuario> entidad = criteria.from(Usuario.class);
+            criteria.where(builder.like(entidad.get("nombre"), nombre));
+            //FIN CONFIGURACIONES DE CONSULTA
+            
+            TypedQuery<Usuario> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception ex) {
+            Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo consultar el usuario");
         }
     }
 }

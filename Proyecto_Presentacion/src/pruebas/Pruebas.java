@@ -36,16 +36,27 @@ public class Pruebas {
 //        } catch (PersistenciaException e) {
 //            System.out.println(e.getMessage());
 //        }
-        Calendar fecha = Calendar.getInstance();
-        fecha.set(Calendar.DAY_OF_MONTH, 10);
-        Calendar fechaFin = Calendar.getInstance();
-        fechaFin.set(Calendar.MONTH, 7);
-        
+//        Calendar fecha = Calendar.getInstance();
+//        fecha.set(Calendar.DAY_OF_MONTH, 10);
+//        Calendar fechaFin = Calendar.getInstance();
+//        fechaFin.set(Calendar.MONTH, 7);
+//        
+//        try {
+//            
+//            List<Compra> listaCompras = comprasDAO.consultarPorUsuario(usuario1);
+//            for(Compra compra : listaCompras){
+//                System.out.println(compra.getUsuario()+ ", " + compra.getId() + ", " + compra.getTotal());
+//            }
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
+
         try {
-            
-            List<Compra> listaCompras = comprasDAO.consultarPorUsuario(usuario1);
-            for(Compra compra : listaCompras){
-                System.out.println(compra.getUsuario()+ ", " + compra.getId() + ", " + compra.getTotal());
+            Usuario usuario = usuariosDAO.consultarUsuarioPorId(1L);
+            if(usuario != null){
+                System.out.println(usuario);
+            }else{
+                System.out.println("No se encontró al usuario");
             }
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
