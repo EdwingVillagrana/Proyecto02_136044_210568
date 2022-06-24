@@ -28,7 +28,13 @@ public class Pruebas {
         IComprasDAO comprasDAO = new ComprasDAO(conexionBD);
 
         Usuario usuario1 = new Usuario(1L, "Edwing Villagrana", "6442860852");
-        Compra compra1 = new Compra(Calendar.getInstance(), 500D);
+        Compra compra1 = new Compra(Calendar.getInstance(), 345D, usuario1);
+        
+        try {
+            comprasDAO.agregar(compra1);
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
 
 //        try {
 //            usuario1.addCompra(compra1);
@@ -62,12 +68,12 @@ public class Pruebas {
 //            System.out.println(e.getMessage());
 //        }
 
-        try {
-            System.out.println(usuariosDAO.consultarUsuarioPorId(10L));
-            System.out.println(usuariosDAO.consultarUsuarioPorId(1L));
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            System.out.println(usuariosDAO.consultarUsuarioPorId(10L));
+//            System.out.println(usuariosDAO.consultarUsuarioPorId(1L));
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
         
         
     }

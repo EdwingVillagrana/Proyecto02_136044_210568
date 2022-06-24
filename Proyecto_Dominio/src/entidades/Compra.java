@@ -39,7 +39,7 @@ public class Compra implements Serializable {
     @Column(name = "total", nullable = false)
     private Double total;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
