@@ -16,6 +16,7 @@ public interface IVideojuegosDAO {
     public void agregar (Videojuego videojuego) throws PersistenciaException;
     public void actualizar(Videojuego videojuego) throws PersistenciaException;
     public void eliminar(Videojuego videojuego) throws PersistenciaException;
+    public List<Videojuego> consultarTodos() throws PersistenciaException;
     public Videojuego consultarVideojuegoPorId(Long id)throws PersistenciaException;
     public List<Videojuego> consultarPorNombre(String nombre) throws PersistenciaException;
 }

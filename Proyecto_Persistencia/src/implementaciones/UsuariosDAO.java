@@ -152,4 +152,19 @@ public class UsuariosDAO implements IUsuariosDAO {
             throw new PersistenciaException("No se pudo consultar el usuario");
         }
     }
+
+    @Override
+    public List<Usuario> consultarTodos() throws PersistenciaException {
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Usuario> criteria = builder.createQuery(Usuario.class);            
+            TypedQuery<Usuario> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception ex) {
+            Logger.getLogger(VideojuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo consultar la lista de usuarios");
+        }
+    }
 }

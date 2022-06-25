@@ -129,4 +129,20 @@ public class VideojuegosDAO implements IVideojuegosDAO {
         }
     }
 
+    @Override
+    public List<Videojuego> consultarTodos() throws PersistenciaException {
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Videojuego> criteria = builder.createQuery(Videojuego.class);            
+            TypedQuery<Videojuego> query = em.createQuery(criteria);
+            
+            return query.getResultList();
+        } catch (Exception ex) {
+            Logger.getLogger(VideojuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No se pudo consultar la lista de videojuegos");
+        }
+    }
+
 }
