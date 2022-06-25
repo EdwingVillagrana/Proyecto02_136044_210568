@@ -53,7 +53,7 @@ public class DetallesComprasDAO implements IDetallesCompraDAO{
 
             //INICIO CONFIGURACIONES DE CONSULTA
             Root<DetallesCompra> entidad = criteria.from(DetallesCompra.class);
-            criteria.where(builder.equal(entidad.get("id"), compra.getId()));
+            criteria.where(builder.equal(entidad.get("compra").get("id"), compra.getId()));
             //FIN CONFIGURACIONES DE CONSULTA
 
             TypedQuery<DetallesCompra> query = em.createQuery(criteria);

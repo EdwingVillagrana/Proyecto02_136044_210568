@@ -69,7 +69,7 @@ public class ComprasDAO implements IComprasDAO {
 
             //INICIO CONFIGURACIONES DE CONSULTA
             Root<Compra> entidad = criteria.from(Compra.class);
-            criteria.where(builder.equal(entidad.get("id"), usuario.getId()));
+            criteria.where(builder.equal(entidad.get("usuario").get("id"), usuario.getId()));
             //FIN CONFIGURACIONES DE CONSULTA
 
             TypedQuery<Compra> query = em.createQuery(criteria);

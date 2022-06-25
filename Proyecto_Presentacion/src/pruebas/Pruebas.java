@@ -35,7 +35,7 @@ public class Pruebas {
         IVideojuegosDAO videojuegosDAO = new VideojuegosDAO(conexionBD);
         IDetallesCompraDAO detallesCompraDAO = new DetallesComprasDAO(conexionBD);
         
-        Usuario usuario1 = new Usuario(1L, "Edwing Villagrana", "6442860852");
+        Usuario usuario1 = new Usuario(2L, "Edwing Villagrana", "6442860852");
         Compra compra1 = new Compra(1L);
         
         Videojuego videojuego1 = new Videojuego(2L, "Mario Sunshine", "Nintendo", 700, 1200D);
@@ -51,8 +51,8 @@ public class Pruebas {
         
         try {
             List<DetallesCompra> lista = detallesCompraDAO.consultarPorIdCompra(compra1);
-            for (DetallesCompra detalles : lista) {
-                System.out.println(detalles);
+            for (int i = 0; i < lista.size(); i++) {
+                System.out.println(lista.get(i));
             }
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
