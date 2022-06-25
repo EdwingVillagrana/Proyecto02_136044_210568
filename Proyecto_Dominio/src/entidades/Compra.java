@@ -51,6 +51,10 @@ public class Compra implements Serializable {
     public Compra() {
     }
 
+    public Compra(Long id) {
+        this.id = id;
+    }
+
     public Compra(Calendar fechaCompra, Double total) {
         this.fechaCompra = fechaCompra;
         this.total = total;
@@ -67,6 +71,14 @@ public class Compra implements Serializable {
         this.fechaCompra = fechaCompra;
         this.total = total;
         this.usuario = usuario;
+    }
+
+    public Compra(Long id, Calendar fechaCompra, Double total, Usuario usuario, List<DetallesCompra> detallesCompra) {
+        this.id = id;
+        this.fechaCompra = fechaCompra;
+        this.total = total;
+        this.usuario = usuario;
+        this.detallesCompra = detallesCompra;
     }
     
     public Long getId() {
@@ -101,6 +113,14 @@ public class Compra implements Serializable {
         this.usuario = usuario;
     }
 
+    public List<DetallesCompra> getDetallesCompra() {
+        return detallesCompra;
+    }
+
+    public void setDetallesCompra(List<DetallesCompra> detallesCompra) {
+        this.detallesCompra = detallesCompra;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,7 +143,7 @@ public class Compra implements Serializable {
 
     @Override
     public String toString() {
-        return "Compra{" + "id=" + id + ", fechaCompra=" + fechaCompra + ", total=" + total + '}';
+        return "Compra{" + "id=" + id + ", fechaCompra=" + fechaCompra + ", total=" + total + ", usuario=" + usuario + ", detallesCompra=" + detallesCompra + '}';
     }
 
 }

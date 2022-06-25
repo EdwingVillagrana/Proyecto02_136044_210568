@@ -4,6 +4,7 @@
  */
 package interfaces;
 
+import entidades.Compra;
 import entidades.DetallesCompra;
 import entidades.Usuario;
 import excepciones.PersistenciaException;
@@ -15,5 +16,5 @@ import java.util.List;
  */
 public interface IDetallesCompraDAO {
     public void agregar (DetallesCompra compra) throws PersistenciaException;
-    public List<DetallesCompra> consultarPorIdCompra (Long id) throws PersistenciaException;
+    public List<DetallesCompra> consultarPorIdCompra (Compra compra) throws PersistenciaException;
 }

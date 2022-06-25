@@ -5,6 +5,7 @@
 
 package implementaciones;
 
+import entidades.Compra;
 import entidades.DetallesCompra;
 import excepciones.PersistenciaException;
 import interfaces.IConexionBD;
@@ -44,22 +45,22 @@ public class DetallesComprasDAO implements IDetallesCompraDAO{
     }
 
     @Override
-    public List<DetallesCompra> consultarPorIdCompra(Long id) throws PersistenciaException {
+    public List<DetallesCompra> consultarPorIdCompra(Compra compra) throws PersistenciaException {
         try {
             EntityManager em = this.conexionBD.crearConexion();
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<DetallesCompra> criteria = builder.createQuery(DetallesCompra.class);
-            
+
             //INICIO CONFIGURACIONES DE CONSULTA
             Root<DetallesCompra> entidad = criteria.from(DetallesCompra.class);
-            criteria.where(builder.equal(entidad.get("compra"), id));
+            criteria.where(builder.equal(entidad.get("id"), compra.getId()));
             //FIN CONFIGURACIONES DE CONSULTA
-            
+
             TypedQuery<DetallesCompra> query = em.createQuery(criteria);
             return query.getResultList();
-        } catch (Exception ex) {
-            Logger.getLogger(UsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("No se pudo consultar el usuario");
+        } catch (Exception e) {
+            Logger.getLogger(ComprasDAO.class.getName()).log(Level.SEVERE, null, e);
+            throw new PersistenciaException("No se pudieron consultar los detalles de esta compra");
         }
     }
 

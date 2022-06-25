@@ -36,21 +36,24 @@ public class Pruebas {
         IDetallesCompraDAO detallesCompraDAO = new DetallesComprasDAO(conexionBD);
         
         Usuario usuario1 = new Usuario(1L, "Edwing Villagrana", "6442860852");
-        Compra compra1 = new Compra(Calendar.getInstance(), 900D, usuario1);
+        Compra compra1 = new Compra(1L);
         
         Videojuego videojuego1 = new Videojuego(2L, "Mario Sunshine", "Nintendo", 700, 1200D);
         
-        try {
-            List<Compra> lista = comprasDAO.consultarPorUsuario(usuario1);
-            Compra compra = lista.get(0);
-            DetallesCompra detallesCompra = new DetallesCompra(5, videojuego1.getPrecio(), (videojuego1.getPrecio()*5), compra, videojuego1);
-            detallesCompraDAO.agregar(detallesCompra);
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            List<Compra> lista = comprasDAO.consultarPorUsuario(usuario1);
+//            Compra compra = lista.get(0);
+//            DetallesCompra detallesCompra = new DetallesCompra(5, videojuego1.getPrecio(), (videojuego1.getPrecio()*5), compra, videojuego1);
+//            detallesCompraDAO.agregar(detallesCompra);
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
         
         try {
-            List<DetallesCompra> lista = detallesCompraDAO.consultarPorIdCompra(1L);
+            List<DetallesCompra> lista = detallesCompraDAO.consultarPorIdCompra(compra1);
+            for (DetallesCompra detalles : lista) {
+                System.out.println(detalles);
+            }
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
