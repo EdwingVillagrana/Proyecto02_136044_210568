@@ -6,11 +6,13 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -38,6 +40,9 @@ public class Videojuego implements Serializable {
     @Column(name = "precio", nullable = false)
     private Double precio;
 
+    @OneToMany(mappedBy = "videojuego")
+    private List<DetallesCompra> detallesCompra;
+    
     public Videojuego() {
     }
 
@@ -58,6 +63,15 @@ public class Videojuego implements Serializable {
         this.desarrolladora = desarrolladora;
         this.stock = stock;
         this.precio = precio;
+    }
+
+    public Videojuego(Long id, String nombre, String desarrolladora, Integer stock, Double precio, List<DetallesCompra> detallesCompra) {
+        this.id = id;
+        this.nombre = nombre;
+        this.desarrolladora = desarrolladora;
+        this.stock = stock;
+        this.precio = precio;
+        this.detallesCompra = detallesCompra;
     }
 
     public Long getId() {
@@ -98,6 +112,14 @@ public class Videojuego implements Serializable {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public List<DetallesCompra> getDetallesCompra() {
+        return detallesCompra;
+    }
+
+    public void setDetallesCompra(List<DetallesCompra> detallesCompra) {
+        this.detallesCompra = detallesCompra;
     }
 
     @Override

@@ -5,14 +5,20 @@
 package pruebas;
 
 import entidades.Compra;
+import entidades.DetallesCompra;
 import entidades.Usuario;
+import entidades.Videojuego;
 import excepciones.PersistenciaException;
 import implementaciones.ComprasDAO;
 import implementaciones.ConexionBD;
+import implementaciones.DetallesComprasDAO;
 import implementaciones.UsuariosDAO;
+import implementaciones.VideojuegosDAO;
 import interfaces.IComprasDAO;
 import interfaces.IConexionBD;
+import interfaces.IDetallesCompraDAO;
 import interfaces.IUsuariosDAO;
+import interfaces.IVideojuegosDAO;
 import java.util.Calendar;
 import java.util.List;
 
@@ -26,56 +32,55 @@ public class Pruebas {
         IConexionBD conexionBD = new ConexionBD();
         IUsuariosDAO usuariosDAO = new UsuariosDAO(conexionBD);
         IComprasDAO comprasDAO = new ComprasDAO(conexionBD);
-
+        IVideojuegosDAO videojuegosDAO = new VideojuegosDAO(conexionBD);
+        IDetallesCompraDAO detallesCompraDAO = new DetallesComprasDAO(conexionBD);
+        
         Usuario usuario1 = new Usuario(1L, "Edwing Villagrana", "6442860852");
-        Compra compra1 = new Compra(Calendar.getInstance(), 345D, usuario1);
+        Compra compra1 = new Compra(Calendar.getInstance(), 900D, usuario1);
+        
+        Videojuego videojuego1 = new Videojuego(2L, "Mario Sunshine", "Nintendo", 700, 1200D);
         
         try {
-            comprasDAO.agregar(compra1);
+            List<Compra> lista = comprasDAO.consultarPorUsuario(usuario1);
+            Compra compra = lista.get(0);
+            DetallesCompra detallesCompra = new DetallesCompra(5, videojuego1.getPrecio(), (videojuego1.getPrecio()*5), compra, videojuego1);
+            detallesCompraDAO.agregar(detallesCompra);
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }
+        
+        try {
+            List<DetallesCompra> lista = detallesCompraDAO.consultarPorIdCompra(1L);
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
+//        try {
+//            detallesCompraDAO.agregar(detallesCompra);
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+
 
 //        try {
-//            usuario1.addCompra(compra1);
+//            videojuegosDAO.agregar(videojuego1);
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
+        
+//        try {
+//            comprasDAO.agregar(compra1);
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
+        
+//        try {
 //            usuariosDAO.agregar(usuario1);
 //        } catch (PersistenciaException e) {
 //            System.out.println(e.getMessage());
 //        }
-//        Calendar fecha = Calendar.getInstance();
-//        fecha.set(Calendar.DAY_OF_MONTH, 10);
-//        Calendar fechaFin = Calendar.getInstance();
-//        fechaFin.set(Calendar.MONTH, 7);
-//        
-//        try {
-//            
-//            List<Compra> listaCompras = comprasDAO.consultarPorUsuario(usuario1);
-//            for(Compra compra : listaCompras){
-//                System.out.println(compra.getUsuario()+ ", " + compra.getId() + ", " + compra.getTotal());
-//            }
-//        } catch (PersistenciaException e) {
-//            System.out.println(e.getMessage());
-//        }
 
-//        try {
-//            Usuario usuario = usuariosDAO.consultarUsuarioPorId(1L);
-//            if(usuario != null){
-//                System.out.println(usuario);
-//            }else{
-//                System.out.println("No se encontró al usuario");
-//            }
-//        } catch (PersistenciaException e) {
-//            System.out.println(e.getMessage());
-//        }
 
-//        try {
-//            System.out.println(usuariosDAO.consultarUsuarioPorId(10L));
-//            System.out.println(usuariosDAO.consultarUsuarioPorId(1L));
-//        } catch (PersistenciaException e) {
-//            System.out.println(e.getMessage());
-//        }
-        
-        
     }
 
 }

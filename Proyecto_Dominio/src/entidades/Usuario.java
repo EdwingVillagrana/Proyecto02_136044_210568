@@ -36,7 +36,7 @@ public class Usuario implements Serializable {
     @Column(name = "telefono", nullable = false, length = 12)
     private String telefono;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario")
     private List<Compra> listaCompras;
     
     public Usuario() {
