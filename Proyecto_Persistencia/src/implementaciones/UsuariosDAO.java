@@ -72,7 +72,7 @@ public class UsuariosDAO implements IUsuariosDAO {
             }
             usuarioGuardado.setNombre(usuario.getNombre());
             usuarioGuardado.setTelefono(usuario.getTelefono());
-            entityManager.persist(usuarioGuardado);
+            entityManager.merge(usuarioGuardado);
 
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
