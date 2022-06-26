@@ -65,7 +65,7 @@ public class VideojuegosDAO implements IVideojuegosDAO {
             videojuegoGuardado.setDesarrolladora(videojuego.getDesarrolladora());
             videojuegoGuardado.setPrecio(videojuego.getPrecio());
             videojuegoGuardado.setStock(videojuego.getStock());
-            entityManager.persist(videojuegoGuardado);
+            entityManager.merge(videojuegoGuardado);
 
             entityManager.getTransaction().commit();
         } catch (Exception ex) {

@@ -191,6 +191,46 @@ public class DlgUsuario extends javax.swing.JDialog {
         txtTelefono.setEditable(true);
     }
 
+    public void busquedaPorNombre() {
+        String nombreUsuarioBuscado = txtBuscarNombre.getText();
+        List<Usuario> listaUsuarios;
+        if (nombreUsuarioBuscado == null || nombreUsuarioBuscado.isEmpty()) {
+            try {
+                listaUsuarios = this.usuariosDAO.consultarTodos();
+                llenarTablaBusqueda(listaUsuarios);
+                txtBuscarNombre.setText("");
+            } catch (PersistenciaException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+
+            try {
+                listaUsuarios = this.usuariosDAO.consultarUsuarioPorNombre(nombreUsuarioBuscado);
+                llenarTablaBusqueda(listaUsuarios);
+                txtBuscarNombre.setText("");
+            } catch (PersistenciaException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+                txtBuscarNombre.setText("");
+            }
+        }
+    }
+    
+    private void llenarTablaBusqueda(List<Usuario> lista) {
+        List<Usuario> listaUsuarios = lista;
+
+        DefaultTableModel modeloTabla = (DefaultTableModel) this.tblUsuarios.getModel();
+
+        modeloTabla.setRowCount(0);
+
+        listaUsuarios.forEach(usuario -> {
+            Object[] fila = new Object[3];
+            fila[0] = usuario.getId();
+            fila[1] = usuario.getNombre();
+            fila[2] = usuario.getTelefono();
+            modeloTabla.addRow(fila);
+        });
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -342,13 +382,12 @@ public class DlgUsuario extends javax.swing.JDialog {
 
         jLabel4.setText("Ingresa un nombre");
 
-        txtBuscarNombre.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscarNombreActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
-
-        btnBuscar.setText("Buscar");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -445,10 +484,6 @@ public class DlgUsuario extends javax.swing.JDialog {
         editar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void txtBuscarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscarNombreActionPerformed
-
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         if (txtNombre.getText().length() >= 100) {
             evt.consume();
@@ -463,6 +498,10 @@ public class DlgUsuario extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        busquedaPorNombre();
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 //    /**
 //     * @param args the command line arguments

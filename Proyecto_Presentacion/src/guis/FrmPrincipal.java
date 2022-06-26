@@ -6,8 +6,10 @@ package guis;
 
 import implementaciones.ConexionBD;
 import implementaciones.UsuariosDAO;
+import implementaciones.VideojuegosDAO;
 import interfaces.IConexionBD;
 import interfaces.IUsuariosDAO;
+import interfaces.IVideojuegosDAO;
 
 /**
  *
@@ -106,7 +108,12 @@ IConexionBD conexionBD = new ConexionBD();
     }//GEN-LAST:event_btnRegistroUsuariosActionPerformed
 
     private void btnRegistroVideojuegosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroVideojuegosActionPerformed
-        // TODO add your handling code here:
+        IVideojuegosDAO videojuegosDAO = new VideojuegosDAO(conexionBD);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DlgVideojuego(FrmPrincipal.this, true, videojuegosDAO).setVisible(true);
+            }
+        });
     }//GEN-LAST:event_btnRegistroVideojuegosActionPerformed
 
     /**
