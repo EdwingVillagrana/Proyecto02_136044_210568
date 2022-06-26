@@ -48,21 +48,24 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
     public void agregarCompra() {
         Usuario usuario = (Usuario) jComboBoxUsuarios.getSelectedItem();
         Compra compra = new Compra(Calendar.getInstance(), total, usuario);
-        try {
-            for (DetallesCompra detalles : listaDetallesCompra) {
+        if (validaCampos()) {
+            try {
+                for (DetallesCompra detalles : listaDetallesCompra) {
 
-                compra.addDetalles(detalles);
+                    compra.addDetalles(detalles);
+                }
+                comprasDAO.agregar(compra);
+                actualizarStock();
+                listaVideojuegos = videojuegosDAO.consultarTodos();
+                llenarTablaVideojuegos(listaVideojuegos);
+                limpiarFormulario();
+                JOptionPane.showMessageDialog(this, "Compra realizada con éxito", "Información", JOptionPane.INFORMATION_MESSAGE);
+            } catch (PersistenciaException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            comprasDAO.agregar(compra);
-            actualizarStock();
-            listaVideojuegos = videojuegosDAO.consultarTodos();
-            llenarTablaVideojuegos(listaVideojuegos);
-            limpiarFormulario();
-        } catch (PersistenciaException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
 
-        limpiarFormulario();
+            limpiarFormulario();
+        }
     }
 
     public void cancelar() {
@@ -321,6 +324,18 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
         return videojuegoSeleccionado;
     }
 
+    public boolean validaCampos() {
+        if (jComboBoxUsuarios.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un usuario", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        if (listaDetallesCompra.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un videojuego", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -358,12 +373,6 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
         jPanel1.setToolTipText("");
 
         lblUsuario.setText("Usuario");
-
-        jComboBoxUsuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxUsuariosActionPerformed(evt);
-            }
-        });
 
         lblFechaCompra.setText("Subtotal");
 
@@ -594,10 +603,6 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jComboBoxUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxUsuariosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxUsuariosActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         agregarCompra();
