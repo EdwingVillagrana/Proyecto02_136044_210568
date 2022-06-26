@@ -4,9 +4,11 @@
  */
 package guis;
 
+import implementaciones.ComprasDAO;
 import implementaciones.ConexionBD;
 import implementaciones.UsuariosDAO;
 import implementaciones.VideojuegosDAO;
+import interfaces.IComprasDAO;
 import interfaces.IConexionBD;
 import interfaces.IUsuariosDAO;
 import interfaces.IVideojuegosDAO;
@@ -38,6 +40,7 @@ IConexionBD conexionBD = new ConexionBD();
         jPanel1 = new javax.swing.JPanel();
         btnRegistroUsuarios = new javax.swing.JButton();
         btnRegistroVideojuegos = new javax.swing.JButton();
+        btnRegistrarCompra = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menú principal");
@@ -56,15 +59,23 @@ IConexionBD conexionBD = new ConexionBD();
             }
         });
 
+        btnRegistrarCompra.setText("Registrar compra");
+        btnRegistrarCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarCompraActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(118, 118, 118)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnRegistroVideojuegos, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegistroUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnRegistroUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistrarCompra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(118, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,7 +85,9 @@ IConexionBD conexionBD = new ConexionBD();
                 .addComponent(btnRegistroUsuarios)
                 .addGap(37, 37, 37)
                 .addComponent(btnRegistroVideojuegos)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnRegistrarCompra)
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -116,6 +129,17 @@ IConexionBD conexionBD = new ConexionBD();
         });
     }//GEN-LAST:event_btnRegistroVideojuegosActionPerformed
 
+    private void btnRegistrarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarCompraActionPerformed
+        IVideojuegosDAO videojuegosDAO = new VideojuegosDAO(conexionBD);
+        IUsuariosDAO usuariosDAO = new UsuariosDAO(conexionBD);
+        IComprasDAO comprasDAO = new ComprasDAO(conexionBD);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DlgCarritoCompras(FrmPrincipal.this, true, usuariosDAO, videojuegosDAO, comprasDAO).setVisible(true);
+            }
+        });            
+    }//GEN-LAST:event_btnRegistrarCompraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -155,6 +179,7 @@ IConexionBD conexionBD = new ConexionBD();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRegistrarCompra;
     private javax.swing.JButton btnRegistroUsuarios;
     private javax.swing.JButton btnRegistroVideojuegos;
     private javax.swing.JPanel jPanel1;

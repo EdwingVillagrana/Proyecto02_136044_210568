@@ -36,18 +36,16 @@ public class Pruebas {
         IDetallesCompraDAO detallesCompraDAO = new DetallesComprasDAO(conexionBD);
         
         Usuario usuario1 = new Usuario(2L, "Edwing Villagrana", "6442860852");
-        Compra compra1 = new Compra(1L);
+        Compra compra1 = new Compra(Calendar.getInstance(), 700D, new Usuario(4L));
         
-        Videojuego videojuego1 = new Videojuego("Metroid", "Nintendo", 150, 700D);
+        Videojuego videojuego1 = new Videojuego(3L,"Metroid", "Nintendo", 150, 700D);
+        DetallesCompra detalles = new DetallesCompra(1, 700D, 700D, compra1, videojuego1);
         
-//        try {
-//            List<Compra> lista = comprasDAO.consultarPorUsuario(usuario1);
-//            Compra compra = lista.get(0);
-//            DetallesCompra detallesCompra = new DetallesCompra(5, videojuego1.getPrecio(), (videojuego1.getPrecio()*5), compra, videojuego1);
-//            detallesCompraDAO.agregar(detallesCompra);
-//        } catch (PersistenciaException e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            detallesCompraDAO.agregar(detalles);
+        } catch (PersistenciaException e) {
+            System.out.println(e.getMessage());
+        }
         
 //        try {
 //            List<DetallesCompra> lista = detallesCompraDAO.consultarPorIdCompra(compra1);
@@ -65,13 +63,13 @@ public class Pruebas {
 
 
 
-        try {
-            for(Videojuego videojuego : videojuegosDAO.consultarTodos()){
-                System.out.println(videojuego);
-            }
-        } catch (PersistenciaException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            for(Videojuego videojuego : videojuegosDAO.consultarTodos()){
+//                System.out.println(videojuego);
+//            }
+//        } catch (PersistenciaException e) {
+//            System.out.println(e.getMessage());
+//        }
         
 //        try {
 //            comprasDAO.agregar(compra1);

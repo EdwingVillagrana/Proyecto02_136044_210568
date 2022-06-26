@@ -38,7 +38,7 @@ public class DetallesCompra implements Serializable {
     @Column(name = "importe", nullable = false)
     private Double importe;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_compra")
     private Compra compra;
     
@@ -51,6 +51,13 @@ public class DetallesCompra implements Serializable {
 
     public DetallesCompra(Long id) {
         this.id = id;
+    }
+
+    public DetallesCompra(Integer numeroCopias, Double precio, Double importe, Videojuego videojuego) {
+        this.numeroCopias = numeroCopias;
+        this.precio = precio;
+        this.importe = importe;
+        this.videojuego = videojuego;
     }
 
     public DetallesCompra(Integer numeroCopias, Double precio, Double importe, Compra compra, Videojuego videojuego) {
@@ -84,6 +91,7 @@ public class DetallesCompra implements Serializable {
 
     public void setNumeroCopias(Integer numeroCopias) {
         this.numeroCopias = numeroCopias;
+        this.importe = this.precio*numeroCopias;
     }
 
     public Double getPrecio() {
