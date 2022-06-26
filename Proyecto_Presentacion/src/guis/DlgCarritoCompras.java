@@ -4,15 +4,18 @@
  */
 package guis;
 
+import entidades.Compra;
 import entidades.DetallesCompra;
 import entidades.Usuario;
 import entidades.Videojuego;
 import excepciones.PersistenciaException;
 import interfaces.*;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,6 +42,27 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
         listaDetallesCompra = new LinkedList<>();
         initComponents();
         busquedaPorNombre();
+        llenarComboBoxUsuarios();
+    }
+
+    public void agregarCompra() {
+        Usuario usuario = (Usuario) jComboBoxUsuarios.getSelectedItem();
+        Compra compra = new Compra(Calendar.getInstance(), total, usuario);
+        try {
+            for (DetallesCompra detalles : listaDetallesCompra) {
+
+                compra.addDetalles(detalles);
+            }
+            comprasDAO.agregar(compra);
+            actualizarStock();
+            listaVideojuegos = videojuegosDAO.consultarTodos();
+            llenarTablaVideojuegos(listaVideojuegos);
+            limpiarFormulario();
+        } catch (PersistenciaException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        limpiarFormulario();
     }
 
     public void cancelar() {
@@ -121,7 +145,7 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
         }
     }
 
-    public void eliminarCopia(){
+    public void eliminarCopia() {
         int indiceId = 0;
         int indiceFila = tblVideojuegosSeleccionados.getSelectedRow();
         Videojuego videojuego = null;
@@ -136,11 +160,11 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
             } catch (PersistenciaException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
             }
-            
+
             for (int i = 0; i < listaDetallesCompra.size(); i++) {
-                if(listaDetallesCompra.get(i).getVideojuego().equals(videojuego)){
-                    listaDetallesCompra.get(i).setNumeroCopias(listaDetallesCompra.get(i).getNumeroCopias()-1);
-                    if(listaDetallesCompra.get(i).getNumeroCopias()==0){
+                if (listaDetallesCompra.get(i).getVideojuego().equals(videojuego)) {
+                    listaDetallesCompra.get(i).setNumeroCopias(listaDetallesCompra.get(i).getNumeroCopias() - 1);
+                    if (listaDetallesCompra.get(i).getNumeroCopias() == 0) {
                         listaDetallesCompra.remove(i);
                         listaVideojuegos.remove(videojuego);
                     }
@@ -150,7 +174,7 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
             llenarTablaSeleccionados(listaDetallesCompra);
         }
     }
-    
+
     public void calculaImporteTotal() {
 
         subtotal = 0D;
@@ -249,6 +273,37 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
         calculaImporteTotal();
         this.txtSubtotal.setText(subtotal.toString());
         this.txtTotal.setText(total.toString());
+    }
+
+    public void llenarComboBoxUsuarios() {
+
+        List<Usuario> listaUsuarios = null;
+
+        try {
+            listaUsuarios = usuariosDAO.consultarTodos();
+        } catch (PersistenciaException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        for (Usuario usuario : listaUsuarios) {
+            jComboBoxUsuarios.addItem(usuario);
+        }
+    }
+
+    public void actualizarStock() {
+        Videojuego videojuego;
+        int numeroCopias;
+
+        for (int i = 0; i < listaDetallesCompra.size(); i++) {
+            numeroCopias = listaDetallesCompra.get(i).getNumeroCopias();
+            videojuego = listaDetallesCompra.get(i).getVideojuego();
+            videojuego.setStock(videojuego.getStock() - numeroCopias);
+            try {
+                videojuegosDAO.actualizar(videojuego);
+            } catch (PersistenciaException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     public Videojuego videojuegoSeleccionadoTablaVideojuegos() {
@@ -545,7 +600,7 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
     }//GEN-LAST:event_jComboBoxUsuariosActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
+        agregarCompra();
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -618,7 +673,7 @@ public class DlgCarritoCompras extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminarCopia;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JComboBox<String> jComboBoxUsuarios;
+    private javax.swing.JComboBox<Object> jComboBoxUsuarios;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

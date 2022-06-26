@@ -7,6 +7,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class Compra implements Serializable {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
     
-    @OneToMany(mappedBy = "compra")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "compra")
     private List<DetallesCompra> detallesCompra;
 
     public Compra() {
@@ -113,14 +114,18 @@ public class Compra implements Serializable {
         this.usuario = usuario;
     }
 
-    public List<DetallesCompra> getDetallesCompra() {
-        return detallesCompra;
-    }
+    
 
-    public void setDetallesCompra(List<DetallesCompra> detallesCompra) {
-        this.detallesCompra = detallesCompra;
+    public void addDetalles(DetallesCompra detalles){
+        if(detalles == null){
+            throw new IllegalArgumentException("Los detalles no pueden ser null");
+        }
+        detalles.setCompra(this);
+        if(this.detallesCompra == null){
+            this.detallesCompra = new LinkedList<>();
+        } this.detallesCompra.add(detalles);
+        
     }
-
     @Override
     public int hashCode() {
         int hash = 0;

@@ -20,6 +20,7 @@ import interfaces.IDetallesCompraDAO;
 import interfaces.IUsuariosDAO;
 import interfaces.IVideojuegosDAO;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -36,13 +37,19 @@ public class Pruebas {
         IDetallesCompraDAO detallesCompraDAO = new DetallesComprasDAO(conexionBD);
         
         Usuario usuario1 = new Usuario(2L, "Edwing Villagrana", "6442860852");
-        Compra compra1 = new Compra(Calendar.getInstance(), 700D, new Usuario(4L));
+        Compra compra1 = new Compra(Calendar.getInstance(), 2300D, new Usuario(7L));
         
         Videojuego videojuego1 = new Videojuego(3L,"Metroid", "Nintendo", 150, 700D);
-        DetallesCompra detalles = new DetallesCompra(1, 700D, 700D, compra1, videojuego1);
+        Videojuego videojuego2 = new Videojuego(1L,"Mario Bros. 2", "Nintendo", 350, 900D);
+        DetallesCompra detalles1 = new DetallesCompra(2, 700D, 1400D, compra1, videojuego1);
+        DetallesCompra detalles2 = new DetallesCompra(1, 900D, 900D, compra1, videojuego2);
         
         try {
-            detallesCompraDAO.agregar(detalles);
+            List<DetallesCompra> detalles = new LinkedList<>();
+            detalles.add(detalles1);
+            detalles.add(detalles2);
+            compra1.setDetallesCompra(detalles);
+            comprasDAO.agregar(compra1);
         } catch (PersistenciaException e) {
             System.out.println(e.getMessage());
         }

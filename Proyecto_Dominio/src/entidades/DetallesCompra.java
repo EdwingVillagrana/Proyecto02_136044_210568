@@ -146,10 +146,6 @@ public class DetallesCompra implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "DetallesCompra{" + "id=" + id + ", numeroCopias=" + numeroCopias + ", precio=" + precio + ", importe=" + importe + ", compra=" + compra + ", videojuego=" + videojuego + '}';
-    }
-
+    
     
 }
