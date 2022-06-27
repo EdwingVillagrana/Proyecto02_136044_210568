@@ -17,6 +17,7 @@ import java.util.List;
 public interface IComprasDAO {
     public void agregar (Compra compra) throws PersistenciaException;
     public List<Compra> consultarTodos()throws PersistenciaException;
+    public Compra consultarPorId(Long id) throws PersistenciaException;
     public List<Compra> consultarPorUsuario(Usuario usuario) throws PersistenciaException;
     public List<Compra> consultarPorPeriodo(Calendar fechaInicio, Calendar fechaFin) throws PersistenciaException;
 }

@@ -61,7 +61,7 @@ public class ComprasDAO implements IComprasDAO {
     }
 
     @Override
-    public List<Compra> consultarPorUsuario(Usuario usuario) throws PersistenciaException {
+    public Compra consultarPorId(Long id) throws PersistenciaException {
         try {
             EntityManager em = this.conexionBD.crearConexion();
             CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -69,14 +69,13 @@ public class ComprasDAO implements IComprasDAO {
 
             //INICIO CONFIGURACIONES DE CONSULTA
             Root<Compra> entidad = criteria.from(Compra.class);
-            criteria.where(builder.equal(entidad.get("usuario").get("id"), usuario.getId()));
+            criteria.where(builder.equal(entidad.get("id"), id));
             //FIN CONFIGURACIONES DE CONSULTA
 
             TypedQuery<Compra> query = em.createQuery(criteria);
-            return query.getResultList();
+            return query.getSingleResult();
         } catch (Exception e) {
-            Logger.getLogger(ComprasDAO.class.getName()).log(Level.SEVERE, null, e);
-            throw new PersistenciaException("No se pudo consultar la lista de compras de este usuario");
+            return null;
         }
     }
 
@@ -100,4 +99,25 @@ public class ComprasDAO implements IComprasDAO {
             throw new PersistenciaException("No se pudo consultar la lista de compras de este periodo");
         }
     }
+
+    @Override
+    public List<Compra> consultarPorUsuario(Usuario usuario) throws PersistenciaException {
+        try {
+            EntityManager em = this.conexionBD.crearConexion();
+            CriteriaBuilder builder = em.getCriteriaBuilder();
+            CriteriaQuery<Compra> criteria = builder.createQuery(Compra.class);
+
+            //INICIO CONFIGURACIONES DE CONSULTA
+            Root<Compra> entidad = criteria.from(Compra.class);
+            criteria.where(builder.equal(entidad.get("usuario").get("id"), usuario.getId()));
+            //FIN CONFIGURACIONES DE CONSULTA
+
+            TypedQuery<Compra> query = em.createQuery(criteria);
+            return query.getResultList();
+        } catch (Exception e) {
+            Logger.getLogger(ComprasDAO.class.getName()).log(Level.SEVERE, null, e);
+            throw new PersistenciaException("No se pudo consultar la lista de compras de este usuario");
+        }
+    }
 }
+
